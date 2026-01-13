@@ -8,6 +8,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import MyGigsPage from "./pages/MyGigsPage";
+import CreateGigPage from "./pages/CreateGigPage";
 
 function App() {
   return (
@@ -37,6 +38,15 @@ function App() {
             <>
               <Navbar />
               <ExploreGigsPage />
+            </>
+          }
+        />
+        <Route
+          path="/gigs/new"
+          element={
+            <>
+              <Navbar />
+              <CreateGigPage />
             </>
           }
         />

@@ -45,6 +45,19 @@ interface RegisterData {
   passwordConfirmation: string;
 }
 
+interface CreateGigData {
+  title: string;
+  description: string;
+  budget: number;
+}
+
+interface CreateGigResponse {
+  success: boolean;
+  message: string;
+  errors?: CreateGigErrors;
+  data?: Gig;
+}
+
 interface EmailVerificationData {
   email: string;
   otp: string;
@@ -59,6 +72,18 @@ type LoginResponse = {
   success: boolean;
   message: string;
   errors?: LoginResponseErrors;
+};
+
+type CreateGigErrors = {
+  title: {
+    errors: string[];
+  };
+  description: {
+    errors: string[];
+  };
+  budget: {
+    errors: string[];
+  };
 };
 
 type LoginResponseErrors = {

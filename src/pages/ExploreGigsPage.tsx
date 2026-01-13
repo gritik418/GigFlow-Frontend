@@ -3,9 +3,9 @@ import GigCard from "../components/Gigs/GigCard";
 import { useGetGigsQuery } from "../services/gigsApi";
 
 const ExploreGigsPage: React.FC = () => {
-  const { data, isLoading } = useGetGigsQuery();
+  const [searchTerm, setSearchTerm] = useState<string>("");
   const [gigs, setGigs] = useState<Gig[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const { data, isLoading } = useGetGigsQuery({ search: searchTerm });
 
   useEffect(() => {
     if (data?.data) {

@@ -8,10 +8,23 @@ const gigsApi = createApi({
     credentials: "include",
   }),
   endpoints: (build) => ({
-    getGigs: build.query<{ success: boolean; data?: Gig[] }, void>({
-      query: () => ({
-        url: "/",
+    getGigs: build.query<
+      { success: boolean; data?: Gig[] },
+      { search?: string }
+    >({
+      query: ({ search }) => ({
+        url: `/?search=${search}`,
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    createGig: build.mutation<LoginResponse, CreateGigData>({
+      query: (data) => ({
+        url: "/",
+        method: "POST",
+        body: data,
         headers: {
           "Content-Type": "application/json",
         },
@@ -20,6 +33,6 @@ const gigsApi = createApi({
   }),
 });
 
-export const { useGetGigsQuery } = gigsApi;
+export const { useGetGigsQuery, useCreateGigMutation } = gigsApi;
 
 export default gigsApi;
