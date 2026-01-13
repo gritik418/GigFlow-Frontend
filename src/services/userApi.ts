@@ -7,6 +7,7 @@ const userApi = createApi({
     baseUrl: `${API_URL}/user`,
     credentials: "include",
   }),
+  tagTypes: ["User"],
   endpoints: (builder) => ({
     getUser: builder.query<UserProfileResponse, void>({
       query: () => ({
@@ -16,6 +17,7 @@ const userApi = createApi({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["User"],
     }),
   }),
 });

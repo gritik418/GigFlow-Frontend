@@ -1,12 +1,32 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import {
+  useResendOtpMutation,
+  useVerifyEmailMutation,
+} from "../services/authApi";
+import toast from "react-hot-toast";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUser } from "../features/user/userSlice";
+import type { AppDispatch } from "../app/store";
+import userApi from "../services/userApi";
 
 const OTP_LENGTH = 6;
 const RESEND_COOLDOWN = 60;
 
+type VerificationDataType = {
+  email: string;
+  emailSent: boolean;
+};
+
 const VerifyOtpPage = () => {
   const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(""));
-  const [loading] = useState(false);
+  const navigate = useNavigate();
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch<AppDispatch>();
+  const [email, setEmail] = useState<string>("");
+  const [verify] = useVerifyEmailMutation();
+  const [resendOtp] = useResendOtpMutation();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [cooldown, setCooldown] = useState(RESEND_COOLDOWN);
   const [canResend, setCanResend] = useState(false);
@@ -50,22 +70,49 @@ const VerifyOtpPage = () => {
   const isOtpComplete = otp.every((digit) => digit !== "");
 
   useEffect(() => {
-    if (cooldown <= 0) {
-      setCanResend(true);
+    if (!canResend) {
+      const timer = setInterval(() => {
+        setCooldown((prev) => {
+          if (prev <= 1) {
+            clearInterval(timer);
+            setCanResend(true);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+
+      return () => clearInterval(timer);
+    }
+  }, [canResend]);
+
+  const handleBackToRegister = () => {
+    sessionStorage.removeItem("gigflow_verification");
+    navigate("/register");
+  };
+
+  const handleResend = async () => {
+    if (!canResend) return;
+    if (!email) {
+      toast.error("Invalid session. Please register again.");
+      sessionStorage.removeItem("gigflow_verification");
+      navigate("/register");
       return;
     }
 
-    const timer = setInterval(() => {
-      setCooldown((prev) => prev - 1);
-    }, 1000);
+    try {
+      const result = await resendOtp({ email }).unwrap();
 
-    return () => clearInterval(timer);
-  }, [cooldown]);
-
-  const handleResend = () => {
-    if (!canResend) return;
-
-    // Call resend otp api
+      if (result.message) {
+        toast.success(result.message);
+      }
+    } catch (error: any) {
+      if (error?.data?.message) {
+        toast.error(error.data.message);
+      } else {
+        toast.error("Network error. Please check your connection.");
+      }
+    }
 
     setCooldown(RESEND_COOLDOWN);
     setCanResend(false);
@@ -73,7 +120,53 @@ const VerifyOtpPage = () => {
     inputsRef.current[0]?.focus();
   };
 
-  /* ---------------- UI ---------------- */
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const result = await verify({
+        email,
+        otp: otp.join(""),
+      }).unwrap();
+
+      if (result.message) {
+        toast.success(result.message);
+        sessionStorage.removeItem("gigflow_verification");
+
+        dispatch(userApi.util.invalidateTags(["User"]));
+        navigate("/");
+      }
+    } catch (error: any) {
+      if (error?.data?.message) {
+        toast.error(error.data.message);
+      } else {
+        toast.error("Network error. Please check your connection.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    const storage = sessionStorage.getItem("gigflow_verification");
+    if (storage) {
+      const parsedData = JSON.parse(storage) as VerificationDataType;
+      if (parsedData.emailSent && parsedData.email) {
+        setEmail(parsedData.email);
+      } else {
+        sessionStorage.clear();
+        navigate("/register");
+      }
+    } else {
+      sessionStorage.clear();
+      navigate("/register");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    if (user?._id) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-indigo-900 to-slate-900 px-4">
@@ -88,7 +181,8 @@ const VerifyOtpPage = () => {
               Verify your email
             </h2>
             <p className="mt-2 text-sm text-slate-600">
-              Enter the 6-digit OTP sent to your email
+              Enter the 6-digit OTP sent to{" "}
+              <span className="font-semibold">{email}</span>
             </p>
           </div>
 
@@ -112,6 +206,7 @@ const VerifyOtpPage = () => {
           </div>
 
           <button
+            onClick={handleSubmit}
             disabled={!isOtpComplete || loading}
             className="w-full cursor-pointer disabled:cursor-not-allowed rounded-lg bg-indigo-700 py-3 text-sm font-semibold text-white hover:bg-indigo-800 transition disabled:opacity-50"
           >
@@ -127,12 +222,12 @@ const VerifyOtpPage = () => {
               {canResend ? "Resend OTP" : `Resend in ${cooldown}s`}
             </button>
 
-            <Link
-              to="/login"
+            <button
+              onClick={handleBackToRegister}
               className="text-slate-600 hover:text-slate-800 transition"
             >
-              Back to login
-            </Link>
+              Register
+            </button>
           </div>
         </div>
 

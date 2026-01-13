@@ -2,13 +2,14 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../services/authApi";
 import toast from "react-hot-toast";
-import { useSelector } from "react-redux";
-import { selectUser } from "../features/user/userSlice";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "../app/store";
+import userApi from "../services/userApi";
 
 const LoginPage = () => {
-  const user = useSelector(selectUser);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
   const [errors, setErrors] = useState<Partial<LoginResponseErrors>>({});
   const [loginData, setLoginData] = useState<LoginData>({
     identifier: "",
@@ -27,8 +28,11 @@ const LoginPage = () => {
       setErrors({});
       setLoading(true);
       const result = await login(loginData).unwrap();
+
       if (result.message) {
         toast.success(result.message);
+
+        dispatch(userApi.util.invalidateTags(["User"]));
         navigate("/");
       }
     } catch (error: any) {
@@ -45,10 +49,10 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    if (user?._id) {
-      navigate("/");
+    if (sessionStorage.getItem("gigflow_verification")) {
+      navigate("/verify-email");
     }
-  }, [user]);
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-indigo-900 to-slate-900 px-4">
