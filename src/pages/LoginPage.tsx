@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-export const LoginPage = () => {
+const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading] = useState(false);
 
@@ -9,7 +9,7 @@ export const LoginPage = () => {
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-indigo-900 to-slate-900 px-4">
       <div className="w-full max-w-md">
         <div className="bg-slate-50 rounded-2xl shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)] p-8">
-          <div className="text-center mb-8">
+          <div className="text-center mb-4">
             <div className="mx-auto h-14 w-24 rounded-xl bg-indigo-800 flex items-center justify-center text-white font-bold text-xl shadow-md">
               GigFlow
             </div>
@@ -21,7 +21,7 @@ export const LoginPage = () => {
             </p>
           </div>
 
-          <form className="space-y-5">
+          <form className="space-y-2">
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">
                 Email or Username
@@ -56,7 +56,7 @@ export const LoginPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-lg cursor-pointer bg-indigo-700 py-3 text-sm font-semibold text-white shadow-md hover:bg-indigo-800 active:scale-[0.98] transition disabled:opacity-50"
+              className="w-full mt-2 rounded-lg cursor-pointer bg-indigo-700 py-3 text-sm font-semibold text-white shadow-md hover:bg-indigo-800 active:scale-[0.98] transition disabled:opacity-50"
             >
               {loading ? "Signing in..." : "Sign in"}
             </button>
@@ -71,10 +71,10 @@ export const LoginPage = () => {
           <p className="text-center text-sm text-slate-600">
             Don’t have an account?{" "}
             <Link
-              to="/signup"
+              to="/register"
               className="font-semibold text-indigo-700 hover:text-indigo-800 transition"
             >
-              Sign up
+              Register
             </Link>
           </p>
         </div>
@@ -86,3 +86,5 @@ export const LoginPage = () => {
     </div>
   );
 };
+
+export default LoginPage;
