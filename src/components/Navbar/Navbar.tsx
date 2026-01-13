@@ -5,20 +5,18 @@ import { Link } from "react-router-dom";
 const Navbar = () => {
   const user = useSelector(selectUser);
 
-  console.log(user);
-
   return (
-    <nav className="bg-white/80 backdrop-blur-md shadow-sm border-b border-slate-200 sticky top-0 z-50">
+    <nav className="bg-white/80 backdrop-blur-md shadow-xl border-b border-slate-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
+          <Link to={"/"} className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-linear-to-r from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
               <span className="text-white font-bold text-lg">G</span>
             </div>
             <span className="text-2xl font-bold bg-linear-to-r from-gray-900 to-slate-700 bg-clip-text text-transparent">
               GigFlow
             </span>
-          </div>
+          </Link>
 
           <div className="flex items-center space-x-4">
             <Link

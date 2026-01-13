@@ -1,11 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
+import Navbar from "./components/Navbar/Navbar";
 import ProtectedWrapper from "./components/ProtectedWrapper/ProtectedWrapper";
+import ExploreGigsPage from "./pages/ExploreGigsPage";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
-import Navbar from "./components/Navbar/Navbar";
+import MyGigsPage from "./pages/MyGigsPage";
 
 function App() {
   return (
@@ -17,6 +19,24 @@ function App() {
             <>
               <Navbar />
               <HomePage />
+            </>
+          }
+        />
+        <Route
+          path="/gigs"
+          element={
+            <>
+              <Navbar />
+              <MyGigsPage />
+            </>
+          }
+        />
+        <Route
+          path="/gigs/explore"
+          element={
+            <>
+              <Navbar />
+              <ExploreGigsPage />
             </>
           }
         />

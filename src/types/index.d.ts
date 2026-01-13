@@ -17,8 +17,9 @@ interface Gig {
   title: string;
   description: string;
   budget: number;
-  ownerId: string;
+  ownerId: UserInterface;
   status: "open" | "assigned";
+  createdAt: string;
 }
 
 interface Bid {
