@@ -1,9 +1,19 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { selectUser } from "../features/user/userSlice";
 
 const SignupPage = () => {
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading] = useState(false);
+
+  useEffect(() => {
+    if (user?._id) {
+      navigate("/");
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-indigo-900 to-slate-900 px-4">

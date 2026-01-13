@@ -49,3 +49,9 @@ type LoginResponseErrors = {
     errors: string[];
   };
 };
+
+type UserProfileResponse = {
+  success: boolean;
+  message: string;
+  data: UserInterface;
+};
