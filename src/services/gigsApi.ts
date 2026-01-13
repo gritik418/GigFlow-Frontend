@@ -20,6 +20,27 @@ const gigsApi = createApi({
         },
       }),
     }),
+    getGigById: build.query<{ success: boolean; data?: Gig }, string>({
+      query: (id: string) => ({
+        url: `/${id}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
+    getOwnGigs: build.query<
+      { success: boolean; data?: Gig[] },
+      { search?: string }
+    >({
+      query: ({ search }) => ({
+        url: `/my-gigs/?search=${search}`,
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
     createGig: build.mutation<LoginResponse, CreateGigData>({
       query: (data) => ({
         url: "/",
@@ -33,6 +54,11 @@ const gigsApi = createApi({
   }),
 });
 
-export const { useGetGigsQuery, useCreateGigMutation } = gigsApi;
+export const {
+  useGetGigsQuery,
+  useGetGigByIdQuery,
+  useGetOwnGigsQuery,
+  useCreateGigMutation,
+} = gigsApi;
 
 export default gigsApi;

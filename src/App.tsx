@@ -9,6 +9,7 @@ import SignupPage from "./pages/SignupPage";
 import VerifyEmailPage from "./pages/VerifyEmailPage";
 import MyGigsPage from "./pages/MyGigsPage";
 import CreateGigPage from "./pages/CreateGigPage";
+import GigDetailsPage from "./pages/GigDetailsPage";
 
 function App() {
   return (
@@ -47,6 +48,15 @@ function App() {
             <>
               <Navbar />
               <CreateGigPage />
+            </>
+          }
+        />
+        <Route
+          path="/gigs/:gigId"
+          element={
+            <>
+              <Navbar />
+              <GigDetailsPage />
             </>
           }
         />
