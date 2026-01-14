@@ -52,6 +52,19 @@ interface CreateGigData {
   budget: number;
 }
 
+interface PlaceBidData {
+  message: string;
+  price: number;
+  gigId: string;
+}
+
+interface PlaceBidResponse {
+  success: boolean;
+  message: string;
+  errors?: PlaceBidErrors;
+  data?: Bid;
+}
+
 interface CreateGigResponse {
   success: boolean;
   message: string;
@@ -83,6 +96,15 @@ type CreateGigErrors = {
     errors: string[];
   };
   budget: {
+    errors: string[];
+  };
+};
+
+type PlaceBidErrors = {
+  message: {
+    errors: string[];
+  };
+  price: {
     errors: string[];
   };
 };

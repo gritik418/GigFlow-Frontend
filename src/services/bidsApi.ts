@@ -17,9 +17,19 @@ const bidsApi = createApi({
         },
       }),
     }),
+    placeBid: build.mutation<PlaceBidResponse, PlaceBidData>({
+      query: (data) => ({
+        url: `/`,
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetBidsQuery } = bidsApi;
+export const { useGetBidsQuery, usePlaceBidMutation } = bidsApi;
 
 export default bidsApi;

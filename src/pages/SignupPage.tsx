@@ -1,9 +1,11 @@
 import { useEffect, useState, type ChangeEvent } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { selectUser } from "../features/user/userSlice";
 import { useRegisterMutation } from "../services/authApi";
 import toast from "react-hot-toast";
+import type { AppDispatch } from "../app/store";
+import userApi from "../services/userApi";
 
 const SignupPage = () => {
   const user = useSelector(selectUser);
@@ -20,6 +22,7 @@ const SignupPage = () => {
     password: "",
     passwordConfirmation: "",
   });
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -34,14 +37,8 @@ const SignupPage = () => {
       const result = await register(signupData).unwrap();
       if (result.message) {
         toast.success(result.message);
-        sessionStorage.setItem(
-          "gigflow_verification",
-          JSON.stringify({
-            email: signupData.email,
-            emailSent: true,
-          })
-        );
-        navigate("/verify-email");
+        dispatch(userApi.util.invalidateTags(["User"]));
+        navigate("/");
       }
     } catch (error: any) {
       if (error?.data?.errors) {
@@ -62,11 +59,11 @@ const SignupPage = () => {
     }
   }, [user, navigate]);
 
-  useEffect(() => {
-    if (sessionStorage.getItem("gigflow_verification")) {
-      navigate("/verify-email");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (sessionStorage.getItem("gigflow_verification")) {
+  //     navigate("/verify-email");
+  //   }
+  // }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-indigo-900 to-slate-900 px-4">
