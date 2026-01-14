@@ -6,7 +6,7 @@ const GigCard = ({ gig }: { gig: Gig }) => {
   return (
     <Link
       to={`/gigs/${gig._id}`}
-      className="group cursor-pointer bg-white flex flex-col rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-100 hover:-translate-y-2 max-w-sm mx-auto"
+      className="group w-full cursor-pointer bg-white flex flex-col rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-100 hover:-translate-y-2 max-w-sm mx-auto"
     >
       <div className="relative h-48 w-full flex flex-col overflow-hidden bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100">
         <div className="absolute top-4 left-4 z-10">
