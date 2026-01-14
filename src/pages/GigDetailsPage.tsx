@@ -48,7 +48,12 @@ const GigDetailsPage = () => {
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100 py-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white/80 backdrop-blur-xl rounded-3xl p-8 lg:p-12 border border-white/50 shadow-2xl mb-12">
+        <div className="bg-white/80 backdrop-blur-xl relative rounded-3xl p-8 lg:p-12 border border-white/50 shadow-2xl mb-12">
+          {isOwner && (
+            <span className="absolute top-4 right-6 capitalize bg-gray-300 p-1 text-xs rounded-sm font-semibold">
+              {gig.status}
+            </span>
+          )}
           <div className="lg:flex lg:items-start lg:gap-8">
             <div className="lg:flex-1">
               <div className="flex items-start justify-between mb-6">
@@ -64,7 +69,7 @@ const GigDetailsPage = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 mb-8 p-4 bg-slate-50 rounded-2xl">
+              <div className="flex items-center gap-4 mb-8 p-4 bg-slate-100 rounded-2xl">
                 <div className="w-12 h-12 bg-linear-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center text-white font-bold text-lg">
                   {gig?.ownerId?.firstName?.charAt(0).toUpperCase()}
                 </div>
@@ -96,12 +101,12 @@ const GigDetailsPage = () => {
                   )}
 
                   {!isOwner && isOpen && (
-                    <div className="bg-blue-900 text-center cursor-pointer text-white py-5 px-8 rounded-3xl font-black text-xl shadow-2xl">
+                    <div className="bg-blue-900 w-80 text-center cursor-pointer text-white py-5 px-8 rounded-3xl font-black text-xl shadow-2xl">
                       Place Bid
                     </div>
                   )}
 
-                  {!isOpen && (
+                  {!isOpen && !isOwner && (
                     <div className="text-center py-6 w-80 bg-gray-200 mx-auto rounded-2xl">
                       <div className="w-16 h-16 mx-auto mb-4 bg-gray-200 rounded-2xl flex items-center justify-center">
                         <svg

@@ -1,9 +1,14 @@
+import { Link } from "react-router-dom";
+
 const GigCard = ({ gig }: { gig: Gig }) => {
   const isOpen = gig.status === "open";
 
   return (
-    <div className="group bg-white rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-100 hover:-translate-y-2 max-w-sm mx-auto">
-      <div className="relative h-48 w-full overflow-hidden bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100">
+    <Link
+      to={`/gigs/${gig._id}`}
+      className="group cursor-pointer bg-white flex flex-col rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden border border-slate-100 hover:-translate-y-2 max-w-sm mx-auto"
+    >
+      <div className="relative h-48 w-full flex flex-col overflow-hidden bg-linear-to-br from-slate-50 via-blue-50 to-indigo-100">
         <div className="absolute top-4 left-4 z-10">
           <span
             className={`px-3 py-1.5 rounded-full text-xs font-bold shadow-lg border ${
@@ -40,7 +45,7 @@ const GigCard = ({ gig }: { gig: Gig }) => {
         </div>
       </div>
 
-      <div className="p-6">
+      <div className="p-6 flex flex-1 flex-col">
         <h3 className="font-black text-xl leading-tight text-slate-900 mb-4 line-clamp-2 group-hover:text-indigo-700 transition-all duration-200">
           {gig.title}
         </h3>
@@ -109,7 +114,7 @@ const GigCard = ({ gig }: { gig: Gig }) => {
           {isOpen ? "Place Bid" : "Gig Assigned"}
         </button>
       </div>
-    </div>
+    </Link>
   );
 };
 

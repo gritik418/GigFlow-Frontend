@@ -10,6 +10,7 @@ import VerifyEmailPage from "./pages/VerifyEmailPage";
 import MyGigsPage from "./pages/MyGigsPage";
 import CreateGigPage from "./pages/CreateGigPage";
 import GigDetailsPage from "./pages/GigDetailsPage";
+import GigBidsPage from "./pages/GigBidsPage";
 
 function App() {
   return (
@@ -57,6 +58,15 @@ function App() {
             <>
               <Navbar />
               <GigDetailsPage />
+            </>
+          }
+        />
+        <Route
+          path="/gigs/:gigId/bids"
+          element={
+            <>
+              <Navbar />
+              <GigBidsPage />
             </>
           }
         />

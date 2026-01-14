@@ -24,11 +24,12 @@ interface Gig {
 
 interface Bid {
   _id: string;
-  gigId: string;
-  freelancerId: string;
+  gigId: Gig;
+  freelancerId: UserInterface;
   message: string;
   price: number;
   status: "pending" | "hired" | "rejected";
+  createdAt: string;
 }
 
 interface LoginData {

@@ -14,7 +14,7 @@ const HomePage = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           <Link to="/gigs/explore" className="group">
             <div className="bg-white rounded-3xl p-8 shadow-2xl hover:shadow-3xl hover:-translate-y-2 transition-all duration-300 border border-white/50">
               <div className="w-16 h-16 bg-linear-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
@@ -87,32 +87,6 @@ const HomePage = () => {
               </h3>
               <p className="text-gray-600 text-center mb-6">
                 Manage active projects
-              </p>
-            </div>
-          </Link>
-
-          <Link to="/profile" className="group">
-            <div className="bg-white rounded-3xl p-8 shadow-2xl hover:shadow-3xl hover:-translate-y-2 transition-all duration-300 border border-white/50">
-              <div className="w-16 h-16 bg-linear-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                <svg
-                  className="w-8 h-8 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-3 text-center">
-                Profile
-              </h3>
-              <p className="text-gray-600 text-center mb-6">
-                Update your information
               </p>
             </div>
           </Link>

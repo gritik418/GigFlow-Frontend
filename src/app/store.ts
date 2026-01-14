@@ -3,19 +3,22 @@ import authApi from "../services/authApi";
 import userSlice from "../features/user/userSlice";
 import userApi from "../services/userApi";
 import gigsApi from "../services/gigsApi";
+import bidsApi from "../services/bidsApi";
 
 const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [gigsApi.reducerPath]: gigsApi.reducer,
+    [bidsApi.reducerPath]: bidsApi.reducer,
     [userSlice.reducerPath]: userSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(authApi.middleware)
       .concat(userApi.middleware)
-      .concat(gigsApi.middleware),
+      .concat(gigsApi.middleware)
+      .concat(bidsApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
