@@ -1,12 +1,18 @@
 import { Link, useParams } from "react-router-dom";
 import { useGetGigByIdQuery } from "../services/gigsApi";
 import { useEffect, useState } from "react";
-import { useGetBidsQuery } from "../services/bidsApi";
+import {
+  useGetBidsQuery,
+  useHireFreelancerMutation,
+} from "../services/bidsApi";
+import toast from "react-hot-toast";
 
 const GigBidsPage = () => {
   const { gigId } = useParams<{ gigId: string }>();
   const [gig, setGig] = useState<Gig | null>(null);
   const [bids, setBids] = useState<Bid[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [hire] = useHireFreelancerMutation();
   const { data, isLoading, error } = useGetGigByIdQuery(gigId || "");
   const {
     data: bidsData,
@@ -25,6 +31,24 @@ const GigBidsPage = () => {
       setBids(bidsData.data);
     }
   }, [bidsData]);
+
+  const handleSubmit = async (bidId: string) => {
+    try {
+      setLoading(true);
+      const result = await hire(bidId).unwrap();
+      if (result.message) {
+        toast.success(result.message);
+      }
+    } catch (error: any) {
+      if (error?.data?.message) {
+        toast.error(error.data.message);
+      } else {
+        toast.error("Network error. Please check your connection.");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (isLoading || isBidsLoading) {
     return (
@@ -76,7 +100,7 @@ const GigBidsPage = () => {
                 <div className="flex flex-col h-full px-8 py-4">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-linear-to-r from-gray-700 to-blue-900 rounded-2xl flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 bg-linear-to-r from-gray-700 to-blue-900 rounded-2xl flex items-center justify-center shrink-0">
                         <span className="text-white font-bold text-sm">
                           {bid.freelancerId.firstName[0]}
                         </span>
@@ -106,8 +130,12 @@ const GigBidsPage = () => {
                       </span>
                     </span>
                     {gig.status === "open" && bid.status === "pending" && (
-                      <button className="bg-linear-to-r from-emerald-600 to-emerald-700 text-white px-8 py-3 rounded-2xl font-bold text-sm shadow-xl hover:shadow-2xl hover:from-emerald-700 active:scale-95 transition-all duration-200">
-                        Hire Freelancer
+                      <button
+                        disabled={loading}
+                        onClick={() => handleSubmit(bid._id)}
+                        className="bg-linear-to-r disabled:cursor-not-allowed cursor-pointer from-emerald-600 to-emerald-700 text-white px-8 py-3 rounded-2xl font-bold text-sm shadow-xl hover:shadow-2xl hover:from-emerald-700 active:scale-95 transition-all duration-200"
+                      >
+                        {loading ? <>Processing...</> : "Hire Freelancer"}
                       </button>
                     )}
                   </div>

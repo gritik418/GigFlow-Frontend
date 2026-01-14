@@ -7,6 +7,7 @@ const bidsApi = createApi({
     baseUrl: `${API_URL}/bids`,
     credentials: "include",
   }),
+  tagTypes: ["Bids"],
   endpoints: (build) => ({
     getBids: build.query<{ success: boolean; data?: Bid[] }, string>({
       query: (id: string) => ({
@@ -16,6 +17,7 @@ const bidsApi = createApi({
           "Content-Type": "application/json",
         },
       }),
+      providesTags: ["Bids"],
     }),
     placeBid: build.mutation<PlaceBidResponse, PlaceBidData>({
       query: (data) => ({
@@ -27,9 +29,23 @@ const bidsApi = createApi({
         },
       }),
     }),
+    hireFreelancer: build.mutation<BaseResponse, string>({
+      query: (id: string) => ({
+        url: `/${id}/hire`,
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      invalidatesTags: ["Bids"],
+    }),
   }),
 });
 
-export const { useGetBidsQuery, usePlaceBidMutation } = bidsApi;
+export const {
+  useGetBidsQuery,
+  usePlaceBidMutation,
+  useHireFreelancerMutation,
+} = bidsApi;
 
 export default bidsApi;
