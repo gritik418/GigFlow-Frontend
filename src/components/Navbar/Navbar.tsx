@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { selectUser } from "../../features/user/userSlice";
 import { Link } from "react-router-dom";
+import UserMenu from "./UserMenu";
 
 const Navbar = () => {
   const user = useSelector(selectUser);
@@ -25,8 +26,9 @@ const Navbar = () => {
             >
               My Gigs
             </Link>
+
             <div className="w-px h-6 bg-slate-200" />
-            <div className="flex items-center space-x-3">
+            {/* <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-linear-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
                 <span className="text-white font-semibold text-sm">
                   {user?.firstName[0]}
@@ -35,7 +37,8 @@ const Navbar = () => {
               <span className="font-semibold capitalize text-gray-900">
                 {user?.firstName}
               </span>
-            </div>
+            </div> */}
+            <UserMenu user={user} />
           </div>
         </div>
       </div>

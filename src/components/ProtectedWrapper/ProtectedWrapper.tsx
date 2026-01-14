@@ -5,7 +5,7 @@ import { useGetUserQuery } from "../../services/userApi";
 const publicRoutes = ["/login", "/register", "/verify-email"];
 
 const ProtectedWrapper = ({ children }: { children: React.ReactNode }) => {
-  const { data, isLoading, isFetching } = useGetUserQuery();
+  const { data, isLoading, isFetching, isError } = useGetUserQuery();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -13,7 +13,7 @@ const ProtectedWrapper = ({ children }: { children: React.ReactNode }) => {
   const isAuthenticated = !!data?.data?._id;
 
   useEffect(() => {
-    if (isLoading || isFetching) return;
+    if (isLoading || isFetching || isError) return;
 
     if (!isPublicRoute && !isAuthenticated) {
       navigate("/login", { replace: true });
@@ -24,6 +24,11 @@ const ProtectedWrapper = ({ children }: { children: React.ReactNode }) => {
       navigate("/", { replace: true });
     }
   }, [isLoading, isFetching, isPublicRoute, isAuthenticated, navigate]);
+
+  if (isError && !isPublicRoute) {
+    navigate("/login", { replace: true });
+    return;
+  }
 
   if (!isPublicRoute && (isLoading || isFetching)) {
     return (

@@ -19,6 +19,15 @@ const authApi = createApi({
         },
       }),
     }),
+    logout: builder.mutation<BaseResponse, void>({
+      query: () => ({
+        url: "/logout",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+    }),
     register: builder.mutation<RegisterResponse, RegisterData>({
       query: (data) => ({
         url: "/register",
@@ -57,6 +66,7 @@ const authApi = createApi({
 
 export const {
   useLoginMutation,
+  useLogoutMutation,
   useRegisterMutation,
   useVerifyEmailMutation,
   useResendOtpMutation,
