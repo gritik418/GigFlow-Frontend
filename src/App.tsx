@@ -11,6 +11,7 @@ import MyGigsPage from "./pages/MyGigsPage";
 import CreateGigPage from "./pages/CreateGigPage";
 import GigDetailsPage from "./pages/GigDetailsPage";
 import GigBidsPage from "./pages/GigBidsPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -73,7 +74,7 @@ function App() {
         <Route path="/register" element={<SignupPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/verify-email" element={<VerifyEmailPage />} />
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </ProtectedWrapper>
   );

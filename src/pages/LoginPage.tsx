@@ -2,12 +2,14 @@ import { useEffect, useState, type ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../services/authApi";
 import toast from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "../app/store";
 import userApi from "../services/userApi";
+import { selectUser } from "../features/user/userSlice";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const user = useSelector(selectUser);
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const [errors, setErrors] = useState<Partial<LoginResponseErrors>>({});
@@ -54,6 +56,11 @@ const LoginPage = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (user?._id) {
+      navigate("/");
+    }
+  }, [user]);
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-900 via-indigo-900 to-slate-900 px-4">
       <div className="w-full max-w-md">
